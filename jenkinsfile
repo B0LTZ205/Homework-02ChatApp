@@ -42,6 +42,7 @@ pipeline {
         }
 
         stage("ALL-Container") {
+            steps {
  
         stage("Container Vulnerability Scan (Trivy)") {
             steps {
@@ -124,7 +125,7 @@ pipeline {
             ])
         }
     }
-    }
+}}
 
 
             stage("DAST Scan with OWASP ZAP") {
