@@ -47,27 +47,30 @@ pipeline {
                 script {
                     echo " Scanning Docker image ${IMAGE_NAME} for vulnerabilities..."
  
-                    // JSON report
-                    sh """
-                        docker run --rm -v \$(pwd):/workspace aquasec/trivy:latest image \
-                        --exit-code 0 \
-                        --format json \
-                        --output /workspace/trivy-report.json \
-                        --severity ${TRIVY_SEVERITY} \
-                        ${IMAGE_NAME}
-                    """
- 
-                    // HTML report
-                    sh """
-                        docker run --rm -v \$(pwd):/workspace aquasec/trivy:latest image \
-                        --exit-code 0 \
-                        --format template \
-                        --template "@/contrib/html.tpl" \
-                        --output /workspace/trivy-report.html \
-                        ${IMAGE_NAME}
-                    """
-                }
+            // Run Trivy scan but don’t stop the pipeline if it fails
+            catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
+                // JSON report
+                sh """
+                    docker run --rm -v \$(pwd):/workspace aquasec/trivy:latest image \
+                    --exit-code 0 \
+                    --format json \
+                    --output /workspace/trivy-report.json \
+                    --severity ${TRIVY_SEVERITY} \
+                    ${IMAGE_NAME}
+                """
+
+                // HTML report
+                sh """
+                    docker run --rm -v \$(pwd):/workspace aquasec/trivy:latest image \
+                    --exit-code 0 \
+                    --format template \
+                    --template "@/contrib/html.tpl" \
+                    --output /workspace/trivy-report.html \
+                    ${IMAGE_NAME}
+                """
             }
+        }
+    }
             post {
                 always {
                     echo "Archiving Trivy reports..."
