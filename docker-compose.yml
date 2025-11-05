@@ -3,7 +3,7 @@ services:
   NodeChat:
     image: b0ltz205/nodechat:lts
     build: .
-    container_name: SecureChat
+    container_name: SecureChatNew
     ports:
       - "80:3700"
     environment:
