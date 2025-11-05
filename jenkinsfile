@@ -40,6 +40,8 @@ pipeline {
                 }
             }
         }
+
+        stage("ALL-Container") {
  
         stage("Container Vulnerability Scan (Trivy)") {
             steps {
@@ -121,6 +123,7 @@ pipeline {
                 allowMissing: true
             ])
         }
+    }
     }
 
 
