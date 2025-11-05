@@ -7,10 +7,6 @@ pipeline {
         DOCKERHUB_CREDENTIALS_ID = 'CWEB2140-01'
         IMAGE_NAME = 'b0ltz205/nodechat:lts'
         TRIVY_SEVERITY = "HIGH,CRITICAL"
-
-        TARGET_URL = "http://172.237.145.44/"
-        REPORT_HTML = "zap_report.html"
-        REPORT_JSON = "zap_report.json"
     }
 
     stages 
