@@ -48,7 +48,7 @@ pipeline {
                     echo " Scanning Docker image ${IMAGE_NAME} for vulnerabilities..."
  
             // Run Trivy scan but don’t stop the pipeline if it fails
-            catchError(buildResult: 'PASSED', stageResult: 'FAILURE') {
+            catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                 // JSON report
                 sh """
                     docker run --rm -v \$(pwd):/workspace aquasec/trivy:latest image \
@@ -81,7 +81,7 @@ pipeline {
  
         stage("Summarize Vulnerabilities") {
             steps {
-                catchError(buildResult: 'PASSED', stageResult: 'FAILURE') {
+                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                 script {
                     if (fileExists('trivy-report.json')) {
                         def reportContent = readFile('trivy-report.json')
