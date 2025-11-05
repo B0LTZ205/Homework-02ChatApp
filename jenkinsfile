@@ -81,6 +81,7 @@ pipeline {
  
         stage("Summarize Vulnerabilities") {
             steps {
+                catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
                 script {
                     if (fileExists('trivy-report.json')) {
                         def reportContent = readFile('trivy-report.json')
@@ -110,6 +111,7 @@ pipeline {
                 }
             }
         }
+    }
 
 
 
